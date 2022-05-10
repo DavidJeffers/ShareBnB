@@ -149,7 +149,6 @@ class Listing(db.Model):
     id = db.Column(
         db.Integer,
         nullable=False,
-        unique=True,
         primary_key=True,
     )
 
@@ -183,3 +182,28 @@ class Listing(db.Model):
         db.ForeignKey('users.username', ondelete='CASCADE'),
         nullable=True,
     )
+
+    def serialize(self):
+        """Serializes listing to a dictionary"""
+
+        return { "id": self.id,
+                "location": self.location,
+                "size": self.size,
+                "price": self.price,
+                "details": self.details,
+                "photos": self.photos  }
+
+    @classmethod
+    def add_listing(cls, location, size, price, details, photos):
+        """
+        """
+        listing = Listing(location=location,
+                            size=size,
+                            price=price,
+                            details=details,
+                            photos=photos)
+
+        db.session.add(listing)
+        db.session.commit()
+        return listing
+
