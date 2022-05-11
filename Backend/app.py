@@ -1,4 +1,5 @@
 from email import message
+import json
 import boto3
 import os
 import uuid
@@ -104,7 +105,7 @@ def add_file(listing_id):
                 response = s3_client.upload_fileobj(file, os.environ['BUCKET'], filename, ExtraArgs={
                     "ContentType": "image/jpeg",
                 })
-                image_url = f"https://{os.environ['BUCKET']}.{os.environ['AVAILABILITY_ZONE']}.amazonaws.com/{filename}"
+                image_url = f"https://{os.environ['BUCKET']}.s3.{os.environ['AVAILABILITY_ZONE']}.amazonaws.com/{filename}"
                 photo = Photo.add_photo(listing_id, image_url)
 
             except:
@@ -121,6 +122,39 @@ def get_listing(listing_id):
     # breakpoint()
     listing = Listing.query.get_or_404(listing_id)
     serialized_listing = listing.serialize()
+    photos = Photo.query.filter_by(listing_id=listing_id).all()
+    serialized_photos = []
+    for photo in photos:
+        serialized_photos.append(photo.serialize())
+   
 
-    return jsonify(listing=serialized_listing)
+    return jsonify(listing=serialized_listing, photos=serialized_photos)
 
+@app.route('/listings/<int:listing_id>/rent', methods=["PATCH"])
+def rent_listing(listing_id):
+    username = request.json['username']
+    try:
+        listing = Listing.query.get_or_404(listing_id)
+        if listing.renter != None:
+            return jsonify(message="listing not available")
+        listing.renter = username
+        
+        db.session.commit()
+    except:
+        return jsonify(message="listing not available")
+    return jsonify(message="listing booked")
+
+@app.route('/listings/<int:listing_id>/cancel', methods=["PATCH"])
+def cancel_listing(listing_id):
+    username = request.json['username']
+    try:
+        listing = Listing.query.get_or_404(listing_id)
+        print("listing renter ================", listing.renter)
+        if listing.renter != username:
+            return jsonify(message="listing is booked by another user")
+        listing.renter = None
+        
+        db.session.commit()
+    except:
+        return jsonify(message="listing not available")
+    return jsonify(message="listing canceled")

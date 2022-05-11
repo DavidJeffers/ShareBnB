@@ -189,6 +189,7 @@ class Listing(db.Model):
                 "size": self.size,
                 "price": self.price,
                 "details": self.details,
+                "renter": self.renter,
                   }
 
     @classmethod
@@ -204,6 +205,8 @@ class Listing(db.Model):
         db.session.add(listing)
         db.session.commit()
         return listing
+
+
 
 class Photo(db.Model):
     """Photos for listings"""
@@ -231,3 +234,11 @@ class Photo(db.Model):
         db.session.commit()
         return "Photo was successfully uploaded and added to the database."
 
+    def serialize(self):
+        """Serializes listing to a dictionary"""
+
+        return { "id": self.id,
+                "listing_id": self.listing_id,
+                "photo_url": self.photo_url,
+                
+                  }
