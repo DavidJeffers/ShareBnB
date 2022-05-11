@@ -141,6 +141,29 @@ class Message(db.Model):
         default=datetime.utcnow,
     )
 
+    def serialize(self):
+        """Serializes listing to a dictionary"""
+
+        return { "id": self.id,
+                "to_user": self.to_user,
+                "from_user": self.from_user,
+                "message_text": self.message_text,
+                "timestamp": self.timestamp
+                }
+
+    @classmethod
+    def add_message(cls, to_user, from_user, message_text):
+        """
+        """
+        message = Message(to_user=to_user,
+                            from_user=from_user,
+                            message_text=message_text,
+                            )
+
+        db.session.add(message)
+        db.session.commit()
+        return message
+
 class Listing(db.Model):
     """Listings in the system."""
 
@@ -240,5 +263,5 @@ class Photo(db.Model):
         return { "id": self.id,
                 "listing_id": self.listing_id,
                 "photo_url": self.photo_url,
-                
+
                   }

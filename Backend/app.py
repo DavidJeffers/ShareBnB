@@ -126,7 +126,7 @@ def get_listing(listing_id):
     serialized_photos = []
     for photo in photos:
         serialized_photos.append(photo.serialize())
-   
+
 
     return jsonify(listing=serialized_listing, photos=serialized_photos)
 
@@ -138,7 +138,7 @@ def rent_listing(listing_id):
         if listing.renter != None:
             return jsonify(message="listing not available")
         listing.renter = username
-        
+
         db.session.commit()
     except:
         return jsonify(message="listing not available")
@@ -153,8 +153,41 @@ def cancel_listing(listing_id):
         if listing.renter != username:
             return jsonify(message="listing is booked by another user")
         listing.renter = None
-        
+
         db.session.commit()
     except:
         return jsonify(message="listing not available")
     return jsonify(message="listing canceled")
+
+@app.route('/messages/sent', methods=["GET"])
+def get_messages():
+    """ """
+    username = request.json['username']
+
+    messages = Message.query.filter_by(from_user=username).all()
+    serialized = [m.serialize() for m in messages]
+
+    return jsonify(messages=serialized)
+
+@app.route('/messages/received', methods=["GET"])
+def get_received_messages():
+    """ """
+    username = request.json['username']
+
+    messages = Message.query.filter_by(to_user=username).all()
+    serialized = [m.serialize() for m in messages]
+
+    return jsonify(messages=serialized)
+
+@app.route('/messages/send', methods=["POST"])
+def send_message():
+    """ """
+    to_user = request.json['to_user']
+    from_user = request.json['from_user']
+    text = request.json['text']
+
+    Message.add_message(to_user=to_user,
+                            from_user=from_user,
+                            message_text=text)
+
+    return jsonify(messages=f"Message sent to {to_user}!")
