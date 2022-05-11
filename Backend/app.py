@@ -1,15 +1,17 @@
 from email import message
-import json
 import boto3
+import os
 from flask import Flask, request, jsonify, g
 from models import db, connect_db, Message, User, Listing, UserListing
 from flask_jwt_extended import create_access_token, JWTManager
 
 app = Flask(__name__)
-app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql://davidjeffers:1234@localhost:5432/sharebnb' # added: davidjeffers:1234@localhost:5432
+database_url = os.environ['DATABASE_URL']
+database_url = database_url.replace('postgres://', 'postgresql://')
+app.config['SQLALCHEMY_DATABASE_URI'] = database_url
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 app.config['SQLALCHEMY_ECHO'] = True
-app.config["JWT_SECRET_KEY"] = "super-secret"
+app.config["JWT_SECRET_KEY"] = os.environ['JWT_SECRET_KEY']
 
 connect_db(app)
 jwt = JWTManager(app)
@@ -78,18 +80,22 @@ def add_listing():
 def add_file(listing_id):
     """ """
     file = request.files['file']
+    print("file=========", file)
+    # object_name = os.path.basename(file)
     s3_client = boto3.client(
-    "s3",
-    "us-east-2",
-    aws_access_key_id="AKIAV7FFQTI74KQLMFND",
-    aws_secret_access_key="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",
+                            "s3",
+                            aws_access_key_id=os.environ['AWS_ACCESS_KEY']
+,
+                            aws_secret_access_key=os.environ['AWS_SECRET_KEY'],
     )
+   
+    # try:
+    response = s3_client.upload_fileobj(file, "listing-photos-sharebnb", file.filename, ExtraArgs={
+        "ContentType": "image/jpeg", 
+    })
+    return jsonify(message=response)
     
-    try: 
-        response = s3_client.upload_file(file, "listing-photos-sharebnb", "file")
-        return jsonify(message=response)
-    except:
-        return jsonify(error="error")
+    return jsonify(error="error")
 
     
 
