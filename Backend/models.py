@@ -173,9 +173,7 @@ class Listing(db.Model):
 
     )
 
-    photos = db.Column(
-        db.Text,
-    )
+   
 
     renter = db.Column(
         db.Text,
@@ -191,7 +189,7 @@ class Listing(db.Model):
                 "size": self.size,
                 "price": self.price,
                 "details": self.details,
-                "photos": self.photos  }
+                  }
 
     @classmethod
     def add_listing(cls, location, size, price, details, photos):
@@ -206,4 +204,20 @@ class Listing(db.Model):
         db.session.add(listing)
         db.session.commit()
         return listing
+
+class Photo(db.Model):
+    """Photos for listings"""
+
+    id = db.Column(
+        db.Integer,
+        primary_key=True,
+    )
+
+    listing_id = db.Column(
+        db.Integer,
+        db.ForeignKey('listings.id', ondelete="cascade"),
+    )
+    photo_url = db.Column(
+        db.Text,
+    )
 
