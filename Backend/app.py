@@ -1,13 +1,21 @@
 from email import message
 import boto3
 import os
+import uuid
+import logging
 from flask import Flask, request, jsonify, g
-from models import db, connect_db, Message, User, Listing, UserListing
+from models import db, connect_db, Message, User, Listing, UserListing, Photo
 from flask_jwt_extended import create_access_token, JWTManager
+from flask_uuid import FlaskUUID
+from botocore.exceptions import ClientError
 
 app = Flask(__name__)
+flask_uuid = FlaskUUID()
+flask_uuid.init_app(app)
+
 database_url = os.environ['DATABASE_URL']
 database_url = database_url.replace('postgres://', 'postgresql://')
+
 app.config['SQLALCHEMY_DATABASE_URI'] = database_url
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 app.config['SQLALCHEMY_ECHO'] = True
@@ -15,7 +23,8 @@ app.config["JWT_SECRET_KEY"] = os.environ['JWT_SECRET_KEY']
 
 connect_db(app)
 jwt = JWTManager(app)
-# all routes go here
+
+VALID_EXTENSIONS = ("jpg", "jpeg", "gif", "png")
 
 @app.route('/register', methods=["POST"])
 def register():
@@ -80,24 +89,32 @@ def add_listing():
 def add_file(listing_id):
     """ """
     file = request.files['file']
-    print("file=========", file)
-    # object_name = os.path.basename(file)
-    s3_client = boto3.client(
-                            "s3",
-                            aws_access_key_id=os.environ['AWS_ACCESS_KEY']
-,
-                            aws_secret_access_key=os.environ['AWS_SECRET_KEY'],
-    )
-   
-    # try:
-    response = s3_client.upload_fileobj(file, "listing-photos-sharebnb", file.filename, ExtraArgs={
-        "ContentType": "image/jpeg", 
-    })
-    return jsonify(message=response)
-    
-    return jsonify(error="error")
+    # print("listingId", type(listing_id))
 
-    
+    for extension in VALID_EXTENSIONS:
+        if extension in file.mimetype:
+            filename = str(uuid.uuid4()) + "_.jpg" # appends uuid for unique filename
+            s3_client = boto3.client(
+                            "s3",
+                            aws_access_key_id=os.environ['AWS_ACCESS_KEY'],
+                            aws_secret_access_key=os.environ['AWS_SECRET_KEY'],
+                        )
+
+            try:
+                response = s3_client.upload_fileobj(file, os.environ['BUCKET'], filename, ExtraArgs={
+                    "ContentType": "image/jpeg",
+                })
+                image_url = f"https://{os.environ['BUCKET']}.{os.environ['AVAILABILITY_ZONE']}.amazonaws.com/{filename}"
+                photo = Photo.add_photo(listing_id, image_url)
+
+            except:
+                return jsonify(message="Error! Unsuccessful photo upload.")
+
+            return jsonify(message="Photo was successfully uploaded.")
+
+    return jsonify(message="Error! File must be .png, .jpg, .jpeg, or .gif!")
+
+
 
 @app.route('/listings/<int:listing_id>', methods=["GET"])
 def get_listing(listing_id):

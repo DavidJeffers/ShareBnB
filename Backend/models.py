@@ -173,7 +173,7 @@ class Listing(db.Model):
 
     )
 
-   
+
 
     renter = db.Column(
         db.Text,
@@ -192,14 +192,14 @@ class Listing(db.Model):
                   }
 
     @classmethod
-    def add_listing(cls, location, size, price, details, photos):
+    def add_listing(cls, location, size, price, details):
         """
         """
         listing = Listing(location=location,
                             size=size,
                             price=price,
-                            details=details,
-                            photos=photos)
+                            details=details
+                            )
 
         db.session.add(listing)
         db.session.commit()
@@ -220,4 +220,14 @@ class Photo(db.Model):
     photo_url = db.Column(
         db.Text,
     )
+
+    @classmethod
+    def add_photo(cls, listing_id, photo_url):
+        """
+        """
+        photo = Photo(listing_id=listing_id, photo_url=photo_url)
+
+        db.session.add(photo)
+        db.session.commit()
+        return "Photo was successfully uploaded and added to the database."
 
