@@ -9,6 +9,7 @@ function ListingsPage() {
   const [listings, setListings] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
   const [searchTerm, setSearchTerm] = useState("");
+  const [photos, setPhotos] = useState([]);
 
   useEffect(
     function fetchListingsOnRender() {
@@ -16,10 +17,11 @@ function ListingsPage() {
         try {
           const resp = await ShareBnBApi.getListings();
           // console.log("response======", resp.listings);
-          let listings = resp.listings.filter((listing) =>
-            listing.title.includes(searchTerm)
-          );
-          setListings(listings);
+          // let listings = resp.listings.filter((listing) =>
+          //   listing.title.includes(searchTerm)
+          // );
+          setListings(resp.listings);
+          setPhotos(resp.photos);
           setIsLoading(false);
         } catch (err) {
           console.log(err);
@@ -29,6 +31,7 @@ function ListingsPage() {
     },
     [searchTerm]
   );
+  console.log("photos========", photos);
 
   /**  update setStateTerm state */
   function changeSearchTerm(term) {
@@ -45,7 +48,7 @@ function ListingsPage() {
           {listings.map((listing) => (
             <li key={listing.id} className="">
               <Link to={`/listings/${listing.id}`}>
-                <ListingCard listing={listing} />
+                <ListingCard listing={listing} photos={photos} />
               </Link>
             </li>
           ))}

@@ -74,7 +74,7 @@ def get_listings():
 
     photos = []
     for listing in listings:
-        photos = Photo.query.filter_by(listing_id = listing.id)
+        photos = Photo.query.all()
 
     photo = [p.serialize() for p in photos]
 
