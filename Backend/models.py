@@ -175,6 +175,11 @@ class Listing(db.Model):
         primary_key=True,
     )
 
+    title = db.Column(
+        db.Text,
+        nullable=False,
+    )
+
     location = db.Column(
         db.Text,
         nullable=False,
@@ -193,10 +198,7 @@ class Listing(db.Model):
     details = db.Column(
         db.Text,
         nullable=False,
-
     )
-
-
 
     renter = db.Column(
         db.Text,
@@ -204,22 +206,38 @@ class Listing(db.Model):
         nullable=True,
     )
 
+
     def serialize(self):
         """Serializes listing to a dictionary"""
 
         return { "id": self.id,
+                "title": self.title,
                 "location": self.location,
                 "size": self.size,
                 "price": self.price,
                 "details": self.details,
                 "renter": self.renter,
-                  }
+                }
+
+    def serialize_with_photos(self, photos):
+        """Serializes listing to a dictionary"""
+
+        return { "id": self.id,
+                "title": self.title,
+                "location": self.location,
+                "size": self.size,
+                "price": self.price,
+                "details": self.details,
+                "renter": self.renter,
+                "photos": photos
+                }
 
     @classmethod
-    def add_listing(cls, location, size, price, details):
+    def add_listing(cls, title, location, size, price, details):
         """
         """
-        listing = Listing(location=location,
+        listing = Listing(title=title,
+                            location=location,
                             size=size,
                             price=price,
                             details=details
@@ -234,6 +252,9 @@ class Listing(db.Model):
 class Photo(db.Model):
     """Photos for listings"""
 
+    __tablename__ = 'photo'
+
+
     id = db.Column(
         db.Integer,
         primary_key=True,
@@ -247,6 +268,8 @@ class Photo(db.Model):
         db.Text,
     )
 
+    listing = db.relationship('Listing', backref='photo')
+
     @classmethod
     def add_photo(cls, listing_id, photo_url):
         """
@@ -258,10 +281,11 @@ class Photo(db.Model):
         return "Photo was successfully uploaded and added to the database."
 
     def serialize(self):
-        """Serializes listing to a dictionary"""
+        """Serializes photo url to a dictionary"""
 
-        return { "id": self.id,
+        return {
+                "id": self.id,
                 "listing_id": self.listing_id,
                 "photo_url": self.photo_url,
 
-                  }
+                }

@@ -17,6 +17,8 @@ function ShareBnB() {
         if (token) {
           try {
             ShareBnBApi.token = token;
+            const username = jwt_decode(token);
+            setCurrUser(username.sub);
             setIsLoading(false);
           } catch (err) {
             setIsLoading(false);
@@ -39,11 +41,31 @@ function ShareBnB() {
     setToken(resp.access_token);
     localStorage.setItem("Token", resp.access_token);
   }
+
+  async function handleRegister(formData) {
+    let resp = await ShareBnBApi.register(formData);
+    console.log(resp.access_token);
+    setCurrUser(resp.username);
+    setToken(resp.access_token);
+    localStorage.setItem("Token", resp.access_token);
+  }
+
+  function handleLogout() {
+    localStorage.removeItem("Token");
+    setToken(null);
+    setCurrUser(null);
+  }
+
   return (
     <div>
-      {/* <NavBar /> */}
       <BrowserRouter>
-        <RouteList token={token} handleLogin={handleLogin} />
+        <NavBar handleLogout={handleLogout} currUser={currUser} />
+        <RouteList
+          token={token}
+          currUser={currUser}
+          handleLogin={handleLogin}
+          handleRegister={handleRegister}
+        />
       </BrowserRouter>
     </div>
   );

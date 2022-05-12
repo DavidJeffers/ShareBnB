@@ -7,7 +7,7 @@ import MessageList from "./MessageList";
 import ListingDetail from "./ListingDetail";
 import ListingsPage from "./ListingsPage";
 
-function RouteList({ token, handleLogin }) {
+function RouteList({ token, currUser, handleLogin, handleRegister }) {
   return (
     <div>
       <Routes>
@@ -27,10 +27,13 @@ function RouteList({ token, handleLogin }) {
               path="/Login"
               element={<Login handleLogin={handleLogin} />}
             />
-            <Route path="/register" element={<Register />} />
+            <Route
+              path="/register"
+              element={<Register handleRegister={handleRegister} />}
+            />
           </>
         )}
-        <Route path="/" element={<Homepage />} />
+        <Route path="/" element={<Homepage currUser={currUser} />} />
         <Route path="*" element={<Navigate to="/" />} />
       </Routes>
     </div>

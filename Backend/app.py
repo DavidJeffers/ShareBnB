@@ -65,33 +65,43 @@ def login():
 #     """ """
 
 @app.route('/listings', methods=["GET"])
+@cross_origin()
 def get_listings():
     """ """
 
     listings = Listing.query.all()
     serialized = [l.serialize() for l in listings]
 
-    return jsonify(listings=serialized)
+    photos = []
+    for listing in listings:
+        photos = Photo.query.filter_by(listing_id = listing.id)
+
+    photo = [p.serialize() for p in photos]
+
+    return jsonify(listings=serialized, photos=photo)
 
 @app.route('/listings', methods=["POST"])
+@cross_origin()
 def add_listing():
     """ """
-    files = request.files
 
+    title = request.json["title"]
     location = request.json["location"]
     size = request.json["size"]
     price = request.json["price"]
     details = request.json["details"]
 
-    listing = Listing.add_listing(location, size, price, details)
+    listing = Listing.add_listing(title, location, size, price, details)
 
-    return jsonify(location=listing.location,
+    return jsonify(title=listing.title,
+                    location=listing.location,
                     size=listing.size,
                     price=listing.price,
                     details=listing.details,
                 )
 
 @app.route('/listings/<int:listing_id>/upload', methods=["POST"])
+@cross_origin()
 def add_file(listing_id):
     """ """
     file = request.files['file']
@@ -123,6 +133,7 @@ def add_file(listing_id):
 
 
 @app.route('/listings/<int:listing_id>', methods=["GET"])
+@cross_origin()
 def get_listing(listing_id):
     # breakpoint()
     listing = Listing.query.get_or_404(listing_id)
@@ -136,6 +147,7 @@ def get_listing(listing_id):
     return jsonify(listing=serialized_listing, photos=serialized_photos)
 
 @app.route('/listings/<int:listing_id>/rent', methods=["PATCH"])
+@cross_origin()
 def rent_listing(listing_id):
     username = request.json['username']
     try:
@@ -150,6 +162,7 @@ def rent_listing(listing_id):
     return jsonify(message="listing booked")
 
 @app.route('/listings/<int:listing_id>/cancel', methods=["PATCH"])
+@cross_origin()
 def cancel_listing(listing_id):
     username = request.json['username']
     try:
@@ -165,6 +178,7 @@ def cancel_listing(listing_id):
     return jsonify(message="listing canceled")
 
 @app.route('/messages/sent', methods=["GET"])
+@cross_origin()
 def get_messages():
     """ """
     username = request.json['username']
@@ -175,6 +189,7 @@ def get_messages():
     return jsonify(messages=serialized)
 
 @app.route('/messages/received', methods=["GET"])
+@cross_origin()
 def get_received_messages():
     """ """
     username = request.json['username']
@@ -185,6 +200,7 @@ def get_received_messages():
     return jsonify(messages=serialized)
 
 @app.route('/messages/send', methods=["POST"])
+@cross_origin()
 def send_message():
     """ """
     to_user = request.json['to_user']
