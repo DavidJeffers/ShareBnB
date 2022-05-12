@@ -84,7 +84,7 @@ def get_listings():
 @cross_origin()
 def add_listing():
     """ """
-
+    user_id = request.json["user_id"]
     title = request.json["title"]
     location = request.json["location"]
     size = request.json["size"]
@@ -92,7 +92,7 @@ def add_listing():
     details = request.json["details"]
 
     listing = Listing.add_listing(title, location, size, price, details)
-
+    UserListing.add_user_listing(user_id=user_id, listing_id=listing.id)
     return jsonify(title=listing.title,
                     location=listing.location,
                     size=listing.size,
@@ -142,14 +142,15 @@ def get_listing(listing_id):
     serialized_photos = []
     for photo in photos:
         serialized_photos.append(photo.serialize())
-
-
-    return jsonify(listing=serialized_listing, photos=serialized_photos)
+    res = UserListing.query.filter_by(listing_id=listing.id).one()
+    print("res======", res)
+    return jsonify(listing=serialized_listing, photos=serialized_photos, listing_user=res.user_id)
 
 @app.route('/listings/<int:listing_id>/rent', methods=["PATCH"])
 @cross_origin()
 def rent_listing(listing_id):
     username = request.json['username']
+    print("username", username)
     try:
         listing = Listing.query.get_or_404(listing_id)
         if listing.renter != None:

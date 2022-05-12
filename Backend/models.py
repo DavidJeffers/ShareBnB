@@ -107,6 +107,18 @@ class UserListing(db.Model):
         db.ForeignKey('listings.id', ondelete="cascade"),
         primary_key=True,
     )
+    @classmethod
+    def add_user_listing(cls, user_id, listing_id):
+        """
+        """
+        user_listing = UserListing(user_id=user_id,
+                            listing_id=listing_id,
+                            )
+
+        db.session.add(user_listing)
+        db.session.commit()
+        return user_listing
+    
 
 class Message(db.Model):
     """Messages in the system."""

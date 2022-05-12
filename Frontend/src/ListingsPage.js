@@ -47,7 +47,7 @@ function ListingsPage() {
         <ul>
           {listings.map((listing) => (
             <li key={listing.id} className="">
-              <Link to={`/listings/${listing.id}`}>
+              <Link to={`/ListingDetail/${listing.id}`}>
                 <ListingCard listing={listing} photos={photos} />
               </Link>
             </li>

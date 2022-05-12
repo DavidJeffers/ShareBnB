@@ -69,7 +69,7 @@ class ShareBnBApi {
 
   static async rentListing(formData, listing_id) {
     let listing = await this.request(
-      `/listings/${listing_id}/rent`,
+      `listings/${listing_id}/rent`,
       formData,
       "patch"
     );
@@ -78,7 +78,7 @@ class ShareBnBApi {
 
   static async cancelListing(formData, listing_id) {
     let listing = await this.request(
-      `/listings/${listing_id}/cancel`,
+      `listings/${listing_id}/cancel`,
       formData,
       "patch"
     );

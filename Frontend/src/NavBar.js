@@ -13,9 +13,15 @@ function NavBar({ handleLogout, currUser }) {
               <span className="m-2">
                 <NavLink to="/listingpage">Listings</NavLink>
               </span>
+              <br />
               <span className="m-2">
-                <NavLink to="/messages">Jobs</NavLink>
+                <NavLink to="/messages">Messages</NavLink>
               </span>
+              <br />
+              <span className="m-2">
+                <NavLink to="/addListing">Add Listing</NavLink>
+              </span>
+              <br />
               {/* <span className="m-2">
                 <NavLink to="/profile">Profile</NavLink>
               </span> */}

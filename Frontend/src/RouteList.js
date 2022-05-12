@@ -6,6 +6,7 @@ import Login from "./Login";
 import MessageList from "./MessageList";
 import ListingDetail from "./ListingDetail";
 import ListingsPage from "./ListingsPage";
+import ListingForm from "./ListingForm";
 
 function RouteList({ token, currUser, handleLogin, handleRegister }) {
   return (
@@ -15,10 +16,14 @@ function RouteList({ token, currUser, handleLogin, handleRegister }) {
           <>
             <Route
               path="/ListingDetail/:listing_id"
-              element={<ListingDetail />}
+              element={<ListingDetail currUser={currUser} />}
             />
             <Route path="/ListingPage" element={<ListingsPage />} />
             <Route path="/Messages" element={<MessageList />} />
+            <Route
+              path="/addListing"
+              element={<ListingForm currUser={currUser} />}
+            />
           </>
         )}
         {!token && (
