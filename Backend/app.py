@@ -1,5 +1,4 @@
 from email import message
-import json
 import boto3
 import os
 import uuid
@@ -9,8 +8,12 @@ from models import db, connect_db, Message, User, Listing, UserListing, Photo
 from flask_jwt_extended import create_access_token, JWTManager
 from flask_uuid import FlaskUUID
 from botocore.exceptions import ClientError
-
+from flask_cors import CORS, cross_origin
 app = Flask(__name__)
+cors = CORS(app)
+app.config['CORS_HEADERS'] = 'Content-Type'
+
+
 flask_uuid = FlaskUUID()
 flask_uuid.init_app(app)
 
@@ -28,6 +31,7 @@ jwt = JWTManager(app)
 VALID_EXTENSIONS = ("jpg", "jpeg", "gif", "png")
 
 @app.route('/register', methods=["POST"])
+@cross_origin()
 def register():
     """"""
     username = request.json["username"]
@@ -43,6 +47,7 @@ def register():
     return jsonify(access_token=access_token, username=user.username, first_name=user.first_name, last_name=user.last_name, bio=user.bio, location=user.location)
 
 @app.route('/login', methods=["POST"])
+@cross_origin()
 def login():
     """ """
     username = request.json["username"]
