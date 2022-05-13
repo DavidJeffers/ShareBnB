@@ -44,9 +44,9 @@ function ListingsPage() {
     <div>
       {/* <SearchBar changeSearchTerm={changeSearchTerm} /> */}
       <div>
-        <ul>
+        <ul className="ul-listingPage">
           {listings.map((listing) => (
-            <li key={listing.id} className="">
+            <li key={listing.id} className="card-listingPage">
               <Link to={`/ListingDetail/${listing.id}`}>
                 <ListingCard listing={listing} photos={photos} />
               </Link>

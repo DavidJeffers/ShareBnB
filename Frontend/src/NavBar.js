@@ -1,3 +1,4 @@
+import "./App.css";
 import { NavLink } from "react-router-dom";
 
 function NavBar({ handleLogout, currUser }) {
@@ -10,22 +11,19 @@ function NavBar({ handleLogout, currUser }) {
         <div>
           {currUser ? (
             <div>
-              <span className="m-2">
+              <span className="navlinks m-2">
                 <NavLink to="/listingpage">Listings</NavLink>
               </span>
-              <br />
-              <span className="m-2">
+              <span className="navlinks m-2">
                 <NavLink to="/messages">Messages</NavLink>
               </span>
-              <br />
-              <span className="m-2">
+              <span className="navlinks m-2">
                 <NavLink to="/addListing">Add Listing</NavLink>
               </span>
-              <br />
               {/* <span className="m-2">
                 <NavLink to="/profile">Profile</NavLink>
               </span> */}
-              <span className="m-2">
+              <span className="navlinks m-2">
                 <NavLink to="/" onClick={handleLogout}>
                   Log out {currUser}{" "}
                 </NavLink>
@@ -33,10 +31,10 @@ function NavBar({ handleLogout, currUser }) {
             </div>
           ) : (
             <div>
-              <span className="m-2">
+              <span className="navlinks m-2">
                 <NavLink to="/login">Login</NavLink>
               </span>
-              <span className="m-2">
+              <span className="navlinks m-2">
                 <NavLink to="/signup">Sign Up</NavLink>
               </span>
             </div>

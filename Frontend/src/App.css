@@ -36,3 +36,45 @@
     transform: rotate(360deg);
   }
 }
+
+.navlinks {
+  text-decoration: none;
+}
+
+.home {
+  height: 1000px;
+  /* background-image: url("../public/homepage_bg.jpeg"); */
+  /* background-size: cover; */
+}
+
+.title-homepage {
+  /* margin-top: 30vh; */
+}
+
+.ul-listingPage {
+  display: inline-block;
+  list-style: none;
+}
+
+.card-listingPage {
+  width: 20vh;
+  border: 2px black solid;
+  border-radius: 5%;
+  margin-bottom: 15px;
+}
+
+.formDisplay {
+  /* display: inline-flex;
+  flex-direction: column;
+  width: 100px;
+  height: 100px; */
+}
+
+.label {
+  margin-top: 10px;
+}
+
+.form-listingForm {
+  margin-top: 40px;
+  width: 50vh;
+}

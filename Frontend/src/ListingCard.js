@@ -18,7 +18,7 @@ function ListingCard({ listing, photos }) {
   if (loading) return <div>loading...</div>;
   console.log("listings", photos_for_listings);
   return (
-    <div className="">
+    <div className="card-listingcard">
       {photos_for_listings && (
         <img
           style={{ maxWidth: "30vw", maxHeight: "200px" }}

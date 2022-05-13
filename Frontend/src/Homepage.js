@@ -3,8 +3,8 @@ import { Link } from "react-router-dom";
 
 function Homepage({ currUser }) {
   return (
-    <div className="container text-center">
-      <div>
+    <div className="home container text-center">
+      <div className="title-homepage">
         <h1 className="">ShareBnB</h1>
         <h4 className="">Sharebnb: Outdoor rentals and more.</h4>
         {currUser ? (
