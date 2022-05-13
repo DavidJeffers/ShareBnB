@@ -37,76 +37,62 @@ function ListingForm({ currUser }) {
   return (
     <div className="container form-listingForm">
       <form className="formDisplay" onSubmit={handleSubmit}>
-        <div className="row mb-3">
-          <label className="label col-form-label " forhtml="title">
-            Title
-          </label>
-          <div className="col-sm-10">
-            <input
-              className="input form-control"
-              name="title"
-              value={formData.title}
-              onChange={handleChange}
-            />
-          </div>
+        <div className="row mb-3 form-floating">
+          <label forhtml="title">Title</label>
+          <input
+            className="form-control"
+            id="floatingTitle"
+            name="title"
+            value={formData.title}
+            onChange={handleChange}
+            placeholder="Title"
+          />
         </div>
 
-        <div className="row mb-3">
-          <label className="label col-form-label" forhtml="size">
-            Size
-          </label>
-          <div className="col-sm-10">
-            <input
-              className="input form-control"
-              name="size"
-              value={formData.size}
-              onChange={handleChange}
-            />
-          </div>
+        <div className="row mb-3 form-floating">
+          <label forhtml="size">Size</label>
+          <input
+            className="form-control"
+            name="size"
+            value={formData.size}
+            onChange={handleChange}
+            placeholder="small, medium, large"
+          />
         </div>
 
-        <div className="row mb-3">
-          <label className="label col-form-label" forhtml="details">
-            Details
-          </label>
-          <div className="col-sm-10">
-            <input
-              className="input form-control"
-              name="details"
-              value={formData.details}
-              onChange={handleChange}
-            />
-          </div>
+        <div className="row mb-3 form-floating">
+          <label forhtml="details">Details</label>
+          <input
+            className="form-control"
+            name="details"
+            value={formData.details}
+            onChange={handleChange}
+            placeholder="This is my very nice outdoor space available for rent!"
+          />
         </div>
 
-        <div className="row mb-3">
-          <label className="label col-form-label" forhtml="price">
-            Price
-          </label>
-          <div className="col-sm-10">
-            <input
-              className="input form-control"
-              type="price"
-              name="price"
-              value={formData.price}
-              onChange={handleChange}
-            />
-          </div>
+        <div className="row mb-3 form-floating">
+          <label forhtml="price">Price</label>
+          <input
+            className="form-control"
+            type="price"
+            name="price"
+            value={formData.price}
+            onChange={handleChange}
+            placeholder="(Per night price)"
+          />
         </div>
 
-        <div className="row mb-3">
-          <label className="label col-form-label" forhtml="location">
-            Location
-          </label>
-          <div className="col-sm-10">
-            <input
-              className="input form-control"
-              type="location"
-              name="location"
-              value={formData.location}
-              onChange={handleChange}
-            />
-          </div>
+        <div className="row mb-3 form-floating">
+          <label forhtml="location">Location</label>
+          <input
+            className="input form-control"
+            type="location"
+            name="location"
+            value={formData.location}
+            onChange={handleChange}
+            placeholder="USA"
+          />
         </div>
 
         <button className="btn btn-secondary">Upload Listing</button>

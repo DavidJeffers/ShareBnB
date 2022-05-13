@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from "react";
+import "./App.css";
 
 function ListingCard({ listing, photos }) {
   const [photos_for_listings, set_photos_for_listings] = useState(null);
@@ -17,6 +18,7 @@ function ListingCard({ listing, photos }) {
 
   if (loading) return <div>loading...</div>;
   console.log("listings", photos_for_listings);
+
   return (
     <div className="card-listingcard">
       {photos_for_listings && (
@@ -24,18 +26,14 @@ function ListingCard({ listing, photos }) {
           style={{ maxWidth: "30vw", maxHeight: "200px" }}
           src={`${photos_for_listings[0].photo_url}`}
           alt={`${listing.title}'s logo.`}
-          className="company-logo"
+          className="sharebnb-image"
         ></img>
       )}
       <p className="">{listing.title} </p>
-      <p className="d-flex justify-content-between container">
-        Size: {listing.size}{" "}
-      </p>
-      <p className="d-flex justify-content-between container">
-        Price: ${listing.price} Per day
-      </p>
-
-      <p className="container">Description: {listing.details}</p>
+      <div className="card-text">
+        <p className="">Size: {listing.size} </p>
+        <p className="">${listing.price} per day</p>
+      </div>
     </div>
   );
 }

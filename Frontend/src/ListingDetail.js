@@ -2,6 +2,8 @@ import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import ShareBnBApi from "./api";
 import axios from "axios";
+import SimpleImageSlider from "react-simple-image-slider";
+import "./App.css";
 
 function ListingDetail({ currUser }) {
   const { listing_id } = useParams();
@@ -11,6 +13,7 @@ function ListingDetail({ currUser }) {
   const [file, setFile] = useState(null);
   const [upload, setUpload] = useState(false);
   const [booked, setBooked] = useState(null);
+  const [photoUrls, setPhotoUrls] = useState([]);
 
   useEffect(
     function getListing() {
@@ -21,6 +24,7 @@ function ListingDetail({ currUser }) {
         setLoading(false);
         setUpload(false);
         setBooked(listing.listing.renter);
+        setPhotoUrls(listing.photos.map((photo) => photo.photo_url));
       }
       getListingAxios();
     },
@@ -64,29 +68,34 @@ function ListingDetail({ currUser }) {
     }
     setFileFormOpen(false);
     setUpload(true);
+    window.location.reload(false);
   }
+
   if (loading) return <div>Loading...</div>;
+
   return (
-    <div>
-      {listing.photos.length > 0 &&
-        listing.photos.map((photo) => (
-          <img
-            key={photo.photo_url}
-            src={photo.photo_url}
-            style={{ maxWidth: "30vw", maxHeight: "200px" }}
-            alt={listing.listing.title}
-          />
-        ))}
+    <div className="">
+      <div className="carousel">
+        <SimpleImageSlider
+          className="imageSlider"
+          width={896}
+          height={504}
+          images={photoUrls}
+          showBullets={true}
+          showNavs={true}
+        />
+      </div>
       {fileFormOpen && (
-        <>
+        <div>
           <input type="file" onChange={setFileState} />
           <button onClick={fileUpload}>Upload</button>
-        </>
+        </div>
       )}
       {!fileFormOpen && currUser === listing.listing_user && (
-        <button onClick={() => setFileFormOpen(true)}>Upload images</button>
+        <div className="uploadImages-listingDetail">
+          <button onClick={() => setFileFormOpen(true)}>Upload images</button>
+        </div>
       )}
-
       <h1>{listing.listing.title}</h1>
       <h3>Size: {listing.listing.size}</h3>
       <h3>Price: {listing.listing.price}</h3>

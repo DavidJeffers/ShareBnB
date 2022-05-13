@@ -1,14 +1,13 @@
-import React, {useState} from "react";
+import React, { useState } from "react";
 
-
-function Register({handleRegister}) {
+function Register({ handleRegister }) {
   const [formData, setFormData] = useState({
     username: "",
     password: "",
     first_name: "",
     last_name: "",
     bio: "",
-    location: ""
+    location: "",
   });
   const [message, setMessage] = useState(null);
 
@@ -32,66 +31,69 @@ function Register({handleRegister}) {
     setFormData((data) => ({ ...data, [name]: value }));
   }
   return (
-    <div>
+    <div className="container form-listingForm">
       <form className="formDisplay" onSubmit={handleSubmit}>
-        <label className="label" forhtml="username">
-          Username
-        </label>
-        <input
-          className="input"
-          name="username"
-          value={formData.username}
-          onChange={handleChange}
-        />
-        <label className="label" forhtml="password">
-          Password
-        </label>
-        <input
-          className="input"
-          type="password"
-          name="password"
-          value={formData.password}
-          onChange={handleChange}
-        />
-        <label className="label" forhtml="first_name">
-          First Name
-        </label>
-        <input
-          className="input"
-          name="first_name"
-          value={formData.first_name}
-          onChange={handleChange}
-        />
-        <label className="label" forhtml="last_name">
-          Last Name
-        </label>
-        <input
-          className="input"
-          type="last_name"
-          name="last_name"
-          value={formData.last_name}
-          onChange={handleChange}
-        />
-        <label className="label" forhtml="bio">
-          Bio
-        </label>
-        <input
-          className="input"
-          type="bio"
-          name="bio"
-          value={formData.bio}
-          onChange={handleChange}
-        />
-        <label className="label" forhtml="location">
-          Location
-        </label>
-        <input
-          className="input"
-          type="location"
-          name="location"
-          value={formData.location}
-          onChange={handleChange}
-        />
+        <div className="row form-floating mb-3">
+          <label forhtml="username">Username</label>
+          <input
+            className="form-control"
+            name="username"
+            value={formData.username}
+            onChange={handleChange}
+          />
+        </div>
+        <div className="row form-floating mb-3">
+          <label forhtml="password">Password</label>
+          <input
+            className="form-control"
+            type="password"
+            name="password"
+            value={formData.password}
+            onChange={handleChange}
+          />
+        </div>
+
+        <div className="row form-floating mb-3">
+          <label forhtml="first_name">First Name</label>
+          <input
+            className="form-control"
+            name="first_name"
+            value={formData.first_name}
+            onChange={handleChange}
+          />
+        </div>
+
+        <div className="row form-floating mb-3">
+          <label forhtml="last_name">Last Name</label>
+          <input
+            className="form-control"
+            type="last_name"
+            name="last_name"
+            value={formData.last_name}
+            onChange={handleChange}
+          />
+        </div>
+
+        <div className="row form-floating mb-3">
+          <label forhtml="bio">Bio</label>
+          <input
+            className="form-control"
+            type="bio"
+            name="bio"
+            value={formData.bio}
+            onChange={handleChange}
+          />
+        </div>
+        <div className="row form-floating mb-3">
+          <label forhtml="location">Location</label>
+          <input
+            className="form-control"
+            type="location"
+            name="location"
+            value={formData.location}
+            onChange={handleChange}
+          />
+        </div>
 
         <button className="btn btn-secondary">Register</button>
       </form>

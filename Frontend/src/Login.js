@@ -27,27 +27,32 @@ function Login({ handleLogin }) {
     setFormData((data) => ({ ...data, [name]: value }));
   }
   return (
-    <div>
+    <div className="container form-listingForm">
       <form className="formDisplay" onSubmit={handleSubmit}>
-        <label className="label" forhtml="username">
-          Username
-        </label>
-        <input
-          className="input"
-          name="username"
-          value={formData.username}
-          onChange={handleChange}
-        />
-        <label className="label" forhtml="password">
-          Password
-        </label>
-        <input
-          className="input"
-          type="password"
-          name="password"
-          value={formData.password}
-          onChange={handleChange}
-        />
+        <div className="row form-floating mb-3">
+          <label className="label" forhtml="username">
+            Username
+          </label>
+          <input
+            className="form-control"
+            name="username"
+            value={formData.username}
+            onChange={handleChange}
+          />
+        </div>
+
+        <div className="row form-floating mb-3">
+          <label className="label" forhtml="password">
+            Password
+          </label>
+          <input
+            className="form-control"
+            type="password"
+            name="password"
+            value={formData.password}
+            onChange={handleChange}
+          />
+        </div>
 
         <button className="btn btn-secondary">Sign In</button>
       </form>

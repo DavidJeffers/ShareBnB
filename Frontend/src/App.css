@@ -43,6 +43,7 @@
 
 .home {
   height: 1000px;
+  margin-top: 100px;
   /* background-image: url("../public/homepage_bg.jpeg"); */
   /* background-size: cover; */
 }
@@ -57,7 +58,7 @@
 }
 
 .card-listingPage {
-  width: 20vh;
+  width: 20vw;
   border: 2px black solid;
   border-radius: 5%;
   margin-bottom: 15px;
@@ -77,4 +78,30 @@
 .form-listingForm {
   margin-top: 40px;
   width: 50vh;
+}
+
+.uploadImages-listingDetail {
+  margin-top: 15px;
+}
+
+.carousel {
+  display: inline-block;
+  align-items: center;
+  margin-top: 30px;
+}
+
+.card-listingcard {
+  border: solid black 2px;
+  border-radius: 15px;
+  margin: 15px;
+  margin-bottom: 35px;
+}
+
+.card-text {
+  text-align: center;
+}
+
+.sharebnb-image {
+  margin-top: 10px;
+  border-radius: 15px;
 }

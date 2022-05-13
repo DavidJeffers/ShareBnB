@@ -126,7 +126,7 @@ def add_file(listing_id):
             except:
                 return jsonify(message="Error! Unsuccessful photo upload.")
 
-            return jsonify(message="Photo was successfully uploaded.")
+            return jsonify(image_url=image_url)
 
     return jsonify(message="Error! File must be .png, .jpg, .jpeg, or .gif!")
 
